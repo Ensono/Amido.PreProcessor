@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (http://www.altova.com) by richard wadsworth (Amido) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Richard Wadsworth (Insur E-Com) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="PreProcessorManifest">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Environments">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Environment" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Groups" minOccurs="0"/>
+										<xs:element name="Configuration">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="StaticFile" type="xs:string"/>
+													<xs:element name="OverrideFile" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Default">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Groups" minOccurs="0"/>
+						</xs:sequence>
+						<xs:attribute name="PropertyConfigurationManifest" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Group">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Commands">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Command" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Command">
+		<xs:complexType>
+			<xs:attribute name="Source" type="xs:string" use="required"/>
+			<xs:attribute name="Destination" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Groups">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Group" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
