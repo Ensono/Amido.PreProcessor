@@ -53,8 +53,11 @@ namespace Amido.PreProcessor.Cmd.Tests
             properties.Add("token1", "value1");
             IList<string> tokensNotFound = new List<string>();
 
+            this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+            this.mockTokeniser.Setup(x => x.TryReplace(destFile, properties, out tokensNotFound)).Returns(destFile);
+
             this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(true);
-            this.mockFSO.Setup(x => x.FileExists(destFile)).Returns(false);
+            
             this.mockFSO.Setup(x => x.ReadAllText(sourceFile)).Returns(template);
 
             this.mockTokeniser.Setup(x => x.TryReplace(template, properties, out tokensNotFound)).Returns(processedTemplate);
@@ -107,9 +110,11 @@ namespace Amido.PreProcessor.Cmd.Tests
             properties.Add("token1", "value1");
             IList<string> tokensNotFound = new List<string>();
 
+            this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+            this.mockTokeniser.Setup(x => x.TryReplace(destFile, properties, out tokensNotFound)).Returns(destFile);
+
             this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(true);
 
-            this.mockFSO.Setup(x => x.FileExists(derivedDestimationFile)).Returns(false);
             this.mockFSO.Setup(x => x.ReadAllText(sourceFile)).Returns(template);
 
             this.mockTokeniser.Setup(x => x.TryReplace(template, properties, out tokensNotFound)).Returns(processedTemplate);
@@ -130,7 +135,11 @@ namespace Amido.PreProcessor.Cmd.Tests
             destFile = null;
 
             var properties = new Dictionary<string, string>();
-            
+            IList<string> tokensNotFound = new List<string>();
+
+            this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+            this.mockTokeniser.Setup(x => x.TryReplace(destFile, properties, out tokensNotFound)).Returns(destFile);
+
             this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(true);
 
             Xunit.Assert.Throws<InvalidOperationException>(() => this.tokenisationRunner.ProcessSingleTemplate(properties, sourceFile, destFile));
@@ -149,12 +158,8 @@ namespace Amido.PreProcessor.Cmd.Tests
 
             try
             {
-                this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(true);
-                this.mockFSO.Setup(x => x.FileExists(destFile)).Returns(false);
-
-                this.mockFSO.Setup(x => x.ReadAllText(sourceFile)).Returns(template);
-                this.mockTokeniser.Setup(x => x.TryReplace(template, properties, out tokensNotFound)).Returns(processedTemplate);
-
+                this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+                
                 this.tokenisationRunner.ProcessSingleTemplate(properties, sourceFile, destFile);
 
             }
@@ -170,6 +175,11 @@ namespace Amido.PreProcessor.Cmd.Tests
         public void TestProcessSingleTemplate_WithTemplateFileNotFound_ExpectException()
         {
             var properties = new Dictionary<string, string>();
+            IList<string> tokensNotFound = new List<string>();
+
+            this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+            this.mockTokeniser.Setup(x => x.TryReplace(destFile, properties, out tokensNotFound)).Returns(destFile);
+
             this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(false);
 
             try
@@ -215,20 +225,11 @@ namespace Amido.PreProcessor.Cmd.Tests
 
         private void SetUpMocks(string sourceFile, string destDir, string destFile, string backupFile, string template, string processedTemplate, IDictionary<string, string> properties, IList<string> tokensNotFound, bool destinationExists, bool backupExists, bool destDirExists, bool willWriteToDestination)
         {
+            this.mockTokeniser.Setup(x => x.TryReplace(sourceFile, properties, out tokensNotFound)).Returns(sourceFile);
+            this.mockTokeniser.Setup(x => x.TryReplace(destFile, properties, out tokensNotFound)).Returns(destFile);
+
             this.mockFSO.Setup(x => x.FileExists(sourceFile)).Returns(true);
-            this.mockFSO.Setup(x => x.FileExists(destFile)).Returns(destinationExists);
-
-            if (destinationExists)
-            {
-                this.mockFSO.Setup(x => x.FileExists(backupFile)).Returns(backupExists);
-                if (backupExists)
-                {
-                    this.mockFSO.Setup(x => x.DeleteFile(backupFile));
-                }
-                this.mockFSO.Setup(x => x.CopyFile(destFile, backupFile));
-                this.mockFSO.Setup(x => x.DeleteFile(destFile));
-            }
-
+           
             this.mockFSO.Setup(x => x.ReadAllText(sourceFile)).Returns(template);
             this.mockTokeniser.Setup(x => x.TryReplace(template, properties, out tokensNotFound)).Returns(processedTemplate);
 

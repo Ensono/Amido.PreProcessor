@@ -48,11 +48,6 @@ namespace Amido.PreProcessor.Cmd
                     log.DebugFormat("Derived destination file for source {0} is {1}.", sourceFile, destinationFile);
                 }
 
-                //if (this.fileSystem.FileExists(destinationFile))
-                //{
-                //    BackUpDestinationFile(destinationFile);
-                //}
-
                 var template = this.fileSystem.ReadAllText(sourceFile);
 
                 template = this.TryReplace(properties, template);
@@ -74,21 +69,6 @@ namespace Amido.PreProcessor.Cmd
                         sourceFile, destinationFile), ex);
             }
         }
-
-        //private void BackUpDestinationFile(string destinationFile)
-        //{
-        //    log.DebugFormat("Destination file {0} already exists.  Creating backup...", destinationFile);
-
-        //    var backupfile = string.Format("{0}.bak", destinationFile);
-
-        //    if (this.fileSystem.FileExists(backupfile))
-        //    {
-        //        this.fileSystem.DeleteFile(backupfile);
-        //    }
-
-        //    this.fileSystem.CopyFile(destinationFile, backupfile);
-        //    this.fileSystem.DeleteFile(destinationFile);
-        //}
 
         private string TryReplace(IDictionary<string, string> properties, string template)
         {

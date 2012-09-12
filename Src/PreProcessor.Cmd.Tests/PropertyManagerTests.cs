@@ -157,6 +157,7 @@ namespace Amido.PreProcessor.Cmd.Tests
             {
                 this.mockFSO.Setup(x => x.FileExists(propertiesFileName)).Returns(true);
                 this.mockFSO.Setup(x => x.OpenFile(propertiesFileName, FileMode.Open, FileAccess.Read, FileShare.Read)).Returns(stream);
+                
 
                 return this.propertyManager.LoadProperties(propertiesFileName, dynamicProperties);
             }

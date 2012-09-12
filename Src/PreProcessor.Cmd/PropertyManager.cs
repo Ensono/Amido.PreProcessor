@@ -35,19 +35,21 @@ namespace Amido.PreProcessor.Cmd
         public IDictionary<string, string> LoadProperties(string propertyFile, string overrideFile)
         {
             Args.NotNullOrEmpty(propertyFile, "propertyFile");
-            Args.NotNullOrEmpty(overrideFile, "overrideFile");
 
             IDictionary<string, string> propertiesDictionary = this.LoadStaticProperties(propertyFile);
 
-            log.Debug("Loading overrides ...");
-            IDictionary<string, string> overridesDictionary = this.GetPropertiesFromFile(overrideFile);
-            LogDictionaryDebug(overridesDictionary, "Overrides");
-            log.Debug("Overrides loaded.");
+            if (overrideFile != null)
+            {
+                log.Debug("Loading overrides ...");
+                IDictionary<string, string> overridesDictionary = this.GetPropertiesFromFile(overrideFile);
+                LogDictionaryDebug(overridesDictionary, "Overrides");
+                log.Debug("Overrides loaded.");
 
-            propertiesDictionary = this.MergeProperties(propertiesDictionary, overridesDictionary, true);
+                propertiesDictionary = this.MergeProperties(propertiesDictionary, overridesDictionary, true);
 
-            LogDictionaryInfo(propertiesDictionary, "Merged");
-            
+                LogDictionaryInfo(propertiesDictionary, "Merged");
+            }
+
             return propertiesDictionary;
         }
 
