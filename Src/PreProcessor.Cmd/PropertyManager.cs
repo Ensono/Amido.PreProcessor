@@ -159,16 +159,24 @@ namespace Amido.PreProcessor.Cmd
 
         private IDictionary<string, string> LoadDictionary(PreProcessorConfig config)
         {
+            const string passPhrase = "0B5DCD38C9F34C96AA57393EF2492E84";
+            var md5 = new MD5(passPhrase);
             IDictionary<string, string> dictionary = new Dictionary<string, string>();
 
             foreach (var item in config.Properties)
             {
                 if (dictionary.ContainsKey(item.Name))
                 {
-                    
                     throw new InvalidOperationException(
-                        string.Format("Dictionary already contains property key {0}.",
-                                        item.Name));
+                        string.Format("Dictionary already contains property key {0}.", item.Name));
+                }
+
+                if (item.EncryptedSpecified && item.Encrypted)
+                {
+                    log.Info(string.Format("Decrypting value '{0}'...", item.Value));
+                    var value = md5.Decrypt(item.Value);
+                    dictionary.Add(item.Name, value);
+                    log.Info(string.Format("Decrypted value is '{0}'.", value));
                 }
                 else
                 {
@@ -178,8 +186,5 @@ namespace Amido.PreProcessor.Cmd
 
             return dictionary;
         }
-
-
-        
     }
 }

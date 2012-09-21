@@ -69,6 +69,7 @@
     <Compile Include="IPropertyManager.cs" />
     <Compile Include="ITokenisationRunner.cs" />
     <Compile Include="ITokeniser.cs" />
+    <Compile Include="MD5.cs" />
     <Compile Include="PreProcessorConfig.cs" />
     <Compile Include="PreProcessorManifest.cs" />
     <Compile Include="PreProcessRunner.cs" />

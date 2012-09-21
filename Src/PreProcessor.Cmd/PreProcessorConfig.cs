@@ -46,30 +46,68 @@ namespace Amido.PreProcessor.Cmd {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class Property {
-        
+
         private string nameField;
-        
+
         private string valueField;
-        
+
+        private bool encryptedField;
+
+        private bool encryptedFieldSpecified;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Name {
-            get {
+        public string Name
+        {
+            get
+            {
                 return this.nameField;
             }
-            set {
+            set
+            {
                 this.nameField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Value {
-            get {
+        public string Value
+        {
+            get
+            {
                 return this.valueField;
             }
-            set {
+            set
+            {
                 this.valueField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool Encrypted
+        {
+            get
+            {
+                return this.encryptedField;
+            }
+            set
+            {
+                this.encryptedField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool EncryptedSpecified
+        {
+            get
+            {
+                return this.encryptedFieldSpecified;
+            }
+            set
+            {
+                this.encryptedFieldSpecified = value;
             }
         }
     }
